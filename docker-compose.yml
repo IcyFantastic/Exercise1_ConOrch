@@ -1,6 +1,7 @@
 services:
   nginx:
     image: nginx:latest
+    container_name: proxy
     ports:
       - "80:80"
     volumes:
@@ -11,16 +12,21 @@ services:
 
   wordpress:
     image: wordpress:latest
+    container_name: wp
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME','http://${PUBLIC_IP}');
+        define('WP_SITEURL','http://${PUBLIC_IP}');
     depends_on:
       - db
 
   db:
     image: mysql:5.7
+    container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -29,6 +35,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: pma
     environment:
       PMA_HOST: db
     depends_on:
