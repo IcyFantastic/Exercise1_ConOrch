@@ -6,6 +6,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - cloud-network
     depends_on:
       - wordpress
       - phpmyadmin
@@ -21,6 +23,8 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME','http://${PUBLIC_IP}');
         define('WP_SITEURL','http://${PUBLIC_IP}');
+    networks:
+      - cloud-network
     depends_on:
       - db
 
@@ -32,6 +36,8 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - cloud-network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -39,5 +45,12 @@ services:
     environment:
       PMA_HOST: db
       PMA_ABSOLUTE_URI: http://${PUBLIC_IP}/pma/
+    networks:
+      - cloud-network
     depends_on:
       - db
+
+# Definisi network yang digunakan bersama
+networks:
+  cloud-network:
+    driver: bridge
