@@ -23,6 +23,9 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME','http://${PUBLIC_IP}');
         define('WP_SITEURL','http://${PUBLIC_IP}');
+    # Penambahan volume untuk WordPress sesuai instruksi latihan
+    volumes:
+      - wp_data:/var/www/html
     networks:
       - cloud-network
     depends_on:
@@ -36,6 +39,9 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+    # Penambahan volume untuk Database agar data tidak hilang
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       - cloud-network
 
@@ -54,3 +60,8 @@ services:
 networks:
   cloud-network:
     driver: bridge
+
+# Definisi volume global yang ditambahkan
+volumes:
+  db_data:
+  wp_data:
