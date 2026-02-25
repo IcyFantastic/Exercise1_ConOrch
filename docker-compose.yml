@@ -20,9 +20,6 @@ services:
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_NAME}
-      WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME','http://${PUBLIC_IP}');
-        define('WP_SITEURL','http://${PUBLIC_IP}');
     # Penambahan volume untuk WordPress sesuai instruksi latihan
     volumes:
       - wp_data:/var/www/html
@@ -50,7 +47,7 @@ services:
     container_name: pma
     environment:
       PMA_HOST: db
-      PMA_ABSOLUTE_URI: http://${PUBLIC_IP}/pma/
+      PMA_ABSOLUTE_URI: /pma/
     networks:
       - cloud-network
     depends_on:
