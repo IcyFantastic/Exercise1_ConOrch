@@ -8,9 +8,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - cloud-network
-    depends_on:
-      - wordpress
-      - phpmyadmin
 
   wordpress:
     image: wordpress:latest
